@@ -8,6 +8,9 @@ import android.util.Log
 import com.example.jokeapp.databinding.ActivityMainBinding
 import com.example.jokeapp.model.JokeModel
 import com.example.jokeapp.service.JokeAPI
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,9 +46,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         showJoke()
     }
     private fun speakOut() {
-        val text = binding.txtJokeQuestion.text.toString() + "                  " + binding.txtJokeAnswer.text.toString()
-        println(text + "asdasdsadad")
-        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null,"")
+        val textQuestion = binding.txtJokeQuestion.text.toString()
+        val textAnswer = binding.txtJokeAnswer.text.toString()
+        tts!!.speak(textQuestion, TextToSpeech.QUEUE_FLUSH, null,"")
+        GlobalScope.launch {
+            delay(3000)
+            tts!!.speak(textAnswer, TextToSpeech.QUEUE_FLUSH, null,"")
+
+        }
     }
     private fun showJoke() {
         binding.txtJokeQuestion.text = jokeQuestion
